@@ -5,27 +5,30 @@ import requests
 import time
 
 
-if __name__ == "__main__":
-    import requests
-    import sys
-    import time
-
-    if len(sys.argv) != 2:
-        print("Usage: ./2-user_location https://api.github.com/users/<user>")
-
-    API = sys.argv[1]
-
-    response = requests.get(API)
-
-    user_data = response.json()
+def get_user_location(api_url):
+    response = requests.get(api_url)
 
     if response.status_code == 200:
-        print(user_data['location'])
-
+        user_data = response.json()
+        location = user_data.get('location')
+        if location:
+            print(f"The location of the user is: {location}")
+        else:
+            print("Location not available for this user.")
     elif response.status_code == 404:
         print("Not found")
-
     elif response.status_code == 403:
-        reset_time = response.headers['X-RateLimit-Reset']
-        now = int(time.time())
-        print("Reset in {} min".format((int(reset_time) - now) // 60))
+        reset_time = int(response.headers['X-Ratelimit-Reset'])
+        current_time = int(time.time())
+        minutes_until_reset = max(0, reset_time - current_time) // 60
+        print(f"Reset in {minutes_until_reset} min")
+    else:
+        print(f"Unexpected status code: {response.status_code}")
+
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print("Usage: ./2-user_location.py <github_user_api_url>")
+        sys.exit(1)
+
+    user_api_url = sys.argv[1]
+    get_user_location(user_api_url)
