@@ -3,26 +3,33 @@
 import requests
 
 
+API_ROOT = "https://swapi-api.alx-tools.com/api/"
+
+
 def sentientPlanets():
-    '''list of names with sentient beings'''
-    base_url = "https://swapi.dev/api/starships/"
-    planets = []
+    '''planets'''
+    page = 1
+    species_planet_urls, planet_list = [], []
+    response = requests.get(API_ROOT + 'species/?page={}'.format(page))
+    species_data = response.json()
 
-    while base_url:
-        response = requests.get(base_url)
-        data = response.json()
+    while species_data['next']:
+        response = requests.get(API_ROOT + 'species/?page={}'.format(page))
+        species_data = response.json()
+        for species in species_data['results']:
+            if species['designation'] == 'sentient':
+                species_planet_urls.extend([species['homeworld']])
+            if species['classification'] == 'sentient':
+                species_planet_urls.extend([species['homeworld']])
+        page += 1
 
-        for species in data['results']:
-            if ('classification' in species and
-                species['classification'].lower() == 'sentient') or \
-               ('designation' in species and
-               species['designation'].lower() == 'sentient'):
-                if 'homeworld' in species and species['homeworld']:
-                    homeworld_url = species['homeworld']
-                    homeworld_response = requests.get(homeworld_url)
-                    homeworld_data = homeworld_response.json()
-                    planets.append(homeworld_data['name'])
+    for url in species_planet_urls:
+        if url is not None:
+            response = requests.get(url)
+            planet_data = response.json()
+            planet_list.append(planet_data['name'])
 
-        url = data['next']
+    return(planet_list)
 
-    return planets
+
+
