@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+'''task a3'''
 import sys
 import requests
 import time
