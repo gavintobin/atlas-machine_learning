@@ -28,6 +28,7 @@ def get_user_location(api_url):
 
 
 if __name__ == '__main__':
+    '''location'''
     if len(sys.argv) != 2:
         print("Usage: ./2-user_location.py <github_user_api_url>")
         sys.exit(1)
