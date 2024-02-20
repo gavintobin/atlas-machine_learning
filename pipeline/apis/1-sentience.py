@@ -30,6 +30,3 @@ def sentientPlanets():
             planet_list.append(planet_data['name'])
 
     return(planet_list)
-
-
-
