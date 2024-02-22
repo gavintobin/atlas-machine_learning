@@ -4,7 +4,9 @@ import sys
 import requests
 import time
 
+
 def get_user_location(api_url):
+    '''get user loc'''
     response = requests.get(api_url)
 
     if response.status_code == 200:
@@ -23,6 +25,7 @@ def get_user_location(api_url):
         print("Reset in {} min".format(minutes_until_reset))
     else:
         print("Unexpected status code: {}".format(response.status_code))
+
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
