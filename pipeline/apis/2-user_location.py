@@ -13,7 +13,7 @@ def get_user_location(api_url):
         user_data = response.json()
         location = user_data.get('location')
         if location:
-            print("The location of the user is: {}".format(location))
+            print("{}".format(location))
         else:
             print("Location not available for this user.")
     elif response.status_code == 404:
