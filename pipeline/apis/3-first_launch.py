@@ -37,4 +37,5 @@ def get_first_launch_info():
         print("Error: {response.status_code}")
 
 if __name__ == '__main__':
+    '''main'''
     get_first_launch_info()
