@@ -1,32 +1,40 @@
 #!/usr/bin/env python3
 '''taskj 3'''
-if __name__ == "__main__":
-    import requests
+import requests
 
-    LAUNCHES = 'https://api.spacexdata.com/v5/launches/'
-    ROCKETS = 'https://api.spacexdata.com/v4/rockets/'
-    PADS = 'https://api.spacexdata.com/v4/launchpads/'
 
-    upcomming_response = requests.get(LAUNCHES + 'upcoming')
-    upcomming_launches = upcomming_response.json()
+def get_first_launch_info():
+    '''taask 3'''
+    api_url = "https://api.spacexdata.com/v4/launches"
+    response = requests.get(api_url)
 
-    launch_names = [launch['name'] for launch in upcomming_launches]
-    launch_dates = [launch['date_local'] for launch in upcomming_launches]
-    launch_rockets = [launch['rocket'] for launch in upcomming_launches]
-    launch_pads = [launch['launchpad'] for launch in upcomming_launches]
+    if response.status_code == 200:
+        launches = response.json()
+        if launches:
+            # Sort launches based on date_unix
+            launches.sort(key=lambda launch: launch['date_unix'])
 
-    min_pos = launch_dates.index(min(launch_dates))
+            first_launch = launches[0]
 
-    rocket_response = requests.get(ROCKETS + launch_rockets[min_pos])
-    rocket_data = rocket_response.json()
-    rocket = rocket_data['name']
+            launch_name = first_launch.get('name', 'N/A')
+            launch_date_local = first_launch.get('date_local', 'N/A')
 
-    pad_response = requests.get(PADS + launch_pads[min_pos])
-    pad_data = pad_response.json()
-    pad = pad_data['name']
-    locality = pad_data['locality']
+            # Check if 'rocket' is a string or a dictionary
+            rocket_info = first_launch.get('rocket', 'N/A')
+            if isinstance(rocket_info, dict):
+                rocket_name = rocket_info.get('name', 'N/A')
+            else:
+                rocket_name = rocket_info
 
-    name = launch_names[min_pos]
-    date = launch_dates[min_pos]
+            launchpad_name = first_launch.get('launchpad', {}).get('name', 'N/A')
+            launchpad_locality = first_launch.get('launchpad', {}).get('location', {}).get('name', 'N/A')
 
-    print("{} ({}) {} - {} ({})".format(name, date, rocket, pad, locality))
+            result = f"{launch_name} ({launch_date_local}) {rocket_name} - {launchpad_name} ({launchpad_locality})"
+            print(result)
+        else:
+            print("No launches found.")
+    else:
+        print(f"Error: {response.status_code}")
+
+if __name__ == '__main__':
+    get_first_launch_info()
