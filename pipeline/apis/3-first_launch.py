@@ -29,12 +29,12 @@ def get_first_launch_info():
             launchpad_name = first_launch.get('launchpad', {}).get('name', 'N/A')
             launchpad_locality = first_launch.get('launchpad', {}).get('location', {}).get('name', 'N/A')
 
-            result = f"{launch_name} ({launch_date_local}) {rocket_name} - {launchpad_name} ({launchpad_locality})"
+            result = print("{launch_name} ({launch_date_local}) {rocket_name} - {launchpad_name} ({launchpad_locality})")
             print(result)
         else:
             print("No launches found.")
     else:
-        print(f"Error: {response.status_code}")
+        print("Error: {response.status_code}")
 
 if __name__ == '__main__':
     get_first_launch_info()
