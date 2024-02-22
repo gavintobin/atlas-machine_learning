@@ -2,9 +2,8 @@
 '''taskj 3'''
 import requests
 
-
 def get_first_launch_info():
-    '''taask 3'''
+    '''task 3'''
     api_url = "https://api.spacexdata.com/v4/launches"
     response = requests.get(api_url)
 
@@ -29,12 +28,13 @@ def get_first_launch_info():
             launchpad_name = first_launch.get('launchpad', {}).get('name', 'N/A')
             launchpad_locality = first_launch.get('launchpad', {}).get('location', {}).get('name', 'N/A')
 
-            result = print("{launch_name} ({launch_date_local}) {rocket_name} - {launchpad_name} ({launchpad_locality})")
-            print(result)
+            result = "{launch_name} ({launch_date_local}) {rocket_name} - {launchpad_name} ({launchpad_locality})"
+            print(result.format(launch_name=launch_name, launch_date_local=launch_date_local,
+                                rocket_name=rocket_name, launchpad_name=launchpad_name, launchpad_locality=launchpad_locality))
         else:
             print("No launches found.")
     else:
-        print("Error: {response.status_code}")
+        print("Error: {}".format(response.status_code))
 
 if __name__ == '__main__':
     '''main'''
