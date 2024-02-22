@@ -13,7 +13,7 @@ def availableShips(passenger_count):
         data = response.json()
 
         for ship in data.get('results', []):
-            if ship.get('passengers') and int(ship['passengers']) >= passengerCount:
+            if ship.get('passengers') and int(ship['passengers']) >= passenger_Count:
                 ships.append(ship['name'])
 
         base_url = data.get('next')
