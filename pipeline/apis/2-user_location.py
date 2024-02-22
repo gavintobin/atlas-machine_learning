@@ -4,7 +4,6 @@ import sys
 import requests
 import time
 
-
 def get_user_location(api_url):
     response = requests.get(api_url)
 
@@ -12,7 +11,7 @@ def get_user_location(api_url):
         user_data = response.json()
         location = user_data.get('location')
         if location:
-            print(f"The location of the user is: {location}")
+            print("The location of the user is: {}".format(location))
         else:
             print("Location not available for this user.")
     elif response.status_code == 404:
@@ -21,9 +20,9 @@ def get_user_location(api_url):
         reset_time = int(response.headers['X-Ratelimit-Reset'])
         current_time = int(time.time())
         minutes_until_reset = max(0, reset_time - current_time) // 60
-        print(f"Reset in {minutes_until_reset} min")
+        print("Reset in {} min".format(minutes_until_reset))
     else:
-        print(f"Unexpected status code: {response.status_code}")
+        print("Unexpected status code: {}".format(response.status_code))
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
