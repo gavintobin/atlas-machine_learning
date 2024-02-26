@@ -1,5 +1,5 @@
 -- max state sql
-SELECT State, MAX(values) AS Max_Temperature
+SELECT state, MAX(values) AS Max_Temperature
 FROM Temperatures
-GROUP BY State
-ORDER BY State
+GROUP BY state
+ORDER BY state
