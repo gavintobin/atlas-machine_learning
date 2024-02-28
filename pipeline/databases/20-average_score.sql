@@ -1,17 +1,19 @@
 -- average scores
-DELIMITER//
+DELIMITER &&
 
-DECLARE avg_score DECIMAL(5,2);
+DROP PROCEDURE IF EXISTS ComputeAverageScoreForUser;
 
-    -- Calculate the average score for the given user_id
-    SELECT AVG(score) INTO avg_score
-    FROM scores
-    WHERE id = ComputeAverageScoreForUser.user_id;
+CREATE PROCEDURE ComputeAverageScoreForUser (
+    IN user_id INT
+)
+BEGIN
+    DECLARE average_score DEC(10, 1);
 
-    -- Update the average score in the users table
-    UPDATE users
-    SET average_score = score
-    WHERE id = ComputeAverageScoreForUser.user_id;
-END//
+    SELECT AVG(score) INTO average_score
+        FROM corrections
+        WHERE user_id = corrections.user_id;
 
-DELIMITER ;
+    UPDATE users SET average_score = average_score WHERE id = user_id;
+END; &&
+
+DELIMITER
