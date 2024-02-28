@@ -1,13 +1,11 @@
 -- glam rock
 SELECT
     band_name,
-    (CASE
-        WHEN split IS NOT NULL THEN split - formed
-        ELSE 2020 - formed
-    END) AS lifespan_until_2020
+    IFNULL((split-formed), (2020 - formed))
+    AS lifespan
 FROM
-    bands
+    metal_bands
 WHERE
-    main_style = 'Glam rock'
+    style LIKE '%Glam rock%'
 ORDER BY
-    lifespan_until_2020 DESC
+    lifespan DESC
