@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>mpu_sensor_package</name>
+  <version>0.0.1</version>
+  <description>ROS package for interfacing with MPU6050 sensor</description>
+  <maintainer email="your_email@example.com">Your Name</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclpy</depend>
+  <depend>std_msgs</depend>
+</package>
